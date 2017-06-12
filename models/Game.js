@@ -1,8 +1,8 @@
 'use strict'
 
-var mongoose 	= require('mongoose');
-var Schema   	= mongoose.Schema;
-var Team     	= require('./Team');
+var mongoose = require('mongoose');
+var Schema   = mongoose.Schema;
+var Team     = require('../models/Team');
 
 var gameSchema = new Schema({
 	date: 					Date,

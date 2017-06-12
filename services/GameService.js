@@ -2,6 +2,7 @@
 
 var Game		= require('../models/Game');
 var Team		= require('../models/Team');
+var logger 		= require('../config/winston');
 
 module.exports = {
 	updateOdds
@@ -35,16 +36,16 @@ function updateOdds(game) {
 		endDate.setHours(23);
 		endDate.setMinutes(59);
 
-		console.log(`Updating Game: ${leftTeam.abbrev} @ ${rightTeam.abbrev} on ${game.date}\n`);
+		// logger.info(`Updating Game: ${leftTeam.abbrev} @ ${rightTeam.abbrev} on ${game.date}\n`);
 
 		return Game.update({ home_team: rightTeam._id, away_team: leftTeam._id, date: { $gt: startDate, $lt: endDate } }, { $set: { number_fire_favorite: favored._id, number_fire_odds: game.odds } });
 
 	})
 	.catch((err) => {
-		console.log('Error Updating Game Service', err);
-		console.log(game);
-		console.log(leftTeam);
-		console.log(rightTeam);
+		logger.error('Error Updating Game Service', err);
+		logger.error(game);
+		logger.error(leftTeam);
+		logger.error(rightTeam);
 		reject(err);
 	});
 

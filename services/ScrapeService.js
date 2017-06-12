@@ -3,6 +3,7 @@
 var cheerio 	= require('cheerio');
 var request 	= require('request');
 var GameService	= require('./GameService');
+var logger 		= require('../config/winston');
 
 var now = new Date();
 var numDays = 8;
@@ -39,7 +40,7 @@ function getGameOdds() {
 				iter();
 			})
 			.catch((err) => {
-				console.log('Done messed up', err);
+				logger.error('Done messed up', err);
 				reject(err);
 			});
 
@@ -71,7 +72,7 @@ function requestPage(date) {
 
 	var url = `https://www.numberfire.com/mlb/games/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
 
-	console.log(url);
+	logger.info(url);
 
 	return promisfy(url)
 	.then((body) => {
@@ -80,7 +81,7 @@ function requestPage(date) {
 
 	})
 	.catch((err) => {
-		console.log(err);
+		logger.error(err);
 		throw err;
 	});
 
@@ -125,7 +126,7 @@ function grabGames(date, body) {
 					odds
 				}
 
-				console.log(`${date} ${leftAbbrev} v ${rightAbbrev} favorite: ${favorite} by ${odds}`);
+				// logger.info(`${date} ${leftAbbrev} v ${rightAbbrev} favorite: ${favorite} by ${odds}`);
 
 				return GameService.updateOdds(game)
 				.then((updated) => {

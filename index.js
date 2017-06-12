@@ -3,17 +3,17 @@
 const ROOT_DIR = process.env.ROOT_DIR = __dirname;
 
 var mongoose		= require('mongoose');
-var ScrapeService 	= require('./services/ScrapeService');
+var ScrapeService 	= require(`${ROOT_DIR}/services/ScrapeService`);
 
 require(`${ROOT_DIR}/config/mongoose`);
 var logger = require(`${ROOT_DIR}/config/winston`);
 
 ScrapeService.getGameOdds()
 .then(() => {
-	logger.log('Done and closing');
+	logger.log('info', 'Done and closing');
 	process.exit(0);
 })
 .catch((err) => {
-	throw err;
+	logger.error(err);
 	process.exit(1);
 });
