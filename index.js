@@ -8,6 +8,9 @@ mongoose.connect('mongodb://localhost/mlb_feed');
 
 ScrapeService.getGameOdds()
 .then(() => {
+	return ScrapeService.getEloRating();
+})
+.then(() => {
 	console.log('Done and closing');
 	process.exit(0);
 })

@@ -5,7 +5,7 @@ var request 	= require('request');
 var GameService	= require('./GameService');
 
 var now = new Date();
-var numDays = 8;
+var numDays = 0;
 
 const ABBREV_TRANSLATION = {
 	'CHW': 'CWS'
@@ -33,7 +33,7 @@ function getGameOdds() {
 			var currentDate = new Date();
 			currentDate.setDate(now.getDate() + i);
 
-			requestPage(currentDate)
+			requestNumberFire(currentDate)
 			.then(() => {
 				i++;
 				iter();
@@ -49,7 +49,18 @@ function getGameOdds() {
 
 }
 
-function getEloRating() {}
+function getEloRating() {
+
+	return requestEloPage()
+	.then(() => {
+
+	})
+	.catch((err) => {
+		console.log('Error with get elo rating', err);
+		throw err;
+	});
+
+}
 
 function promisfy(url) {
 
@@ -59,6 +70,8 @@ function promisfy(url) {
 
 			if (error) { reject(error) }
 
+			console.log(body);
+
 			resolve(body);
 
 		});
@@ -67,7 +80,36 @@ function promisfy(url) {
 
 }
 
-function requestPage(date) {
+function requestEloPage() {
+
+	var url = `https://projects.fivethirtyeight.com/2017-mlb-predictions/`;
+
+	console.log(url);
+
+	var req = {
+		url: url,
+		headers: {
+			'Accept': 'text/html',
+			'Accept-Language': 'en-US',
+			'Referer': 'https://www.google.com/',
+			'User-Agent': 'Mozilla/5.0'
+		}
+	}
+
+	return promisfy(req)
+	.then((body) => {
+
+		return parseTeams(body);
+
+	})
+	.catch((err) => {
+		console.log('error in request elo page', err);
+		throw err;
+	});
+
+}
+
+function requestNumberFire(date) {
 
 	var url = `https://www.numberfire.com/mlb/games/${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
 
@@ -142,6 +184,25 @@ function grabGames(date, body) {
 		promises.push(promise);
 
 	}
+
+	return Promise.all(promises);
+
+}
+
+function parseTeams(body) {
+
+	var promises = [];
+
+	var $ = cheerio.load(body);
+	console.log($.html());
+
+	$('.team-row').each((i, elem) => {
+		var promise = new Promise((resolve, reject) => {
+			console.log(elem);
+
+			return resolve();
+		});
+	});
 
 	return Promise.all(promises);
 
