@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
-var Team     	= require('./Team');
+var Team     = require('./Team');
 
 var recordSchema = new Schema({
 	team: 			{ type: Schema.Types.ObjectId, ref: 'Team' },

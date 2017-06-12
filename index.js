@@ -1,17 +1,19 @@
 'use strict'
 
+const ROOT_DIR = process.env.ROOT_DIR = __dirname;
+
 var mongoose		= require('mongoose');
 var ScrapeService 	= require('./services/ScrapeService');
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/mlb_feed');
+require(`${ROOT_DIR}/config/mongoose`);
+var logger = require(`${ROOT_DIR}/config/winston`);
 
 ScrapeService.getGameOdds()
 .then(() => {
-	console.log('Done and closing');
+	logger.log('Done and closing');
 	process.exit(0);
 })
 .catch((err) => {
 	throw err;
 	process.exit(1);
-})
+});
