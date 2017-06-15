@@ -24,10 +24,10 @@ function updateOdds(game) {
 
 		rightTeam = team;
 
-		var favored = team;
+		var favored = rightTeam;
 
 		if (game.favorite === game.leftAbbrev) {
-			favored = game.leftAbbrev;
+			favored = leftTeam;
 		}
 
 		var startDate = new Date(game.date);
