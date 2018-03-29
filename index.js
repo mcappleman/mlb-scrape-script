@@ -5,6 +5,7 @@ const ROOT_DIR = process.env.ROOT_DIR = __dirname;
 var mongoose		= require('mongoose');
 var ScrapeService 	= require(`${ROOT_DIR}/services/ScrapeService`);
 
+require('dotenv').config();
 require(`${ROOT_DIR}/config/mongoose`);
 var logger = require(`${ROOT_DIR}/config/winston`);
 
