@@ -9,6 +9,7 @@ require('dotenv').config();
 require(`${ROOT_DIR}/config/mongoose`);
 var logger = require(`${ROOT_DIR}/config/winston`);
 
+logger.log('info', 'MLB SCRAPING BEGINNING');
 ScrapeService.getGameOdds()
 .then(() => {
 	logger.log('info', 'Done and closing');
